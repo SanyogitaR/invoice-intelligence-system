@@ -46,6 +46,9 @@ The system processes structured vendor data, including:
 | **Invoice Flagging** | XGBoost Classifier | Precision / Recall |
 
 ---
+### 📊 Data Note
+The full `inventory.db` (400MB+) is excluded from this repository for performance. 
+To run the app, you can use the provided `data/sample_inventory.csv` or connect your own SQLite database.
 
 ## 🏗 Project Structure
 ```bash
@@ -59,3 +62,5 @@ The system processes structured vendor data, including:
 │   └── predict_invoice_flag.py
 ├── app.py                      # Streamlit Web Application
 └── README.md                   # Project documentation
+
+
