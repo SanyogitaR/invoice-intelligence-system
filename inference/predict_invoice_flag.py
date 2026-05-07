@@ -1,43 +1,82 @@
 import joblib
 import pandas as pd
+import numpy as np
 import os
 
-# This path goes UP one level, into invoice_flagging, into models, 
-# and then into your classification subfolder.
-MODEL_PATH = "../invoice_flagging/models/classification/predict_flag_invoice.pkl"
+# --- ABSOLUTE PATHS ---
+MODEL_PATH = r"D:\data science\inventory invoice intellignece ml\invoice_flagging\models\classification\predict_flag_invoice.pkl"
+SCALER_PATH = r"D:\data science\inventory invoice intellignece ml\invoice_flagging\models\scaler.pkl"
 
-def load_model(model_path: str = MODEL_PATH):
-    if not os.path.exists(model_path):
-        print(f"Error: Model file not found at {model_path}")
-        return None
-    with open(model_path, "rb") as f:
-        model = joblib.load(f)
-    return model
+def load_artifacts():
+    """Helper to load the model and scaler once."""
+    if not os.path.exists(MODEL_PATH):
+        print(f"❌ ERROR: Model missing at {MODEL_PATH}")
+        return None, None
+    if not os.path.exists(SCALER_PATH):
+        print(f"❌ ERROR: Scaler missing at {SCALER_PATH}")
+        return None, None
+    
+    try:
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        return model, scaler
+    except Exception as e:
+        print(f"❌ Error loading .pkl files: {e}")
+        return None, None
+
+# Load them globally so they stay in memory
+MODEL, SCALER = load_artifacts()
 
 def predict_invoice_flag(input_data):
-    model = load_model()
-    if model is None:
+    # Check if artifacts were loaded correctly
+    if MODEL is None or SCALER is None:
         return None
     
+    # Create DataFrame
     input_df = pd.DataFrame(input_data)
-    # Using the exact logic from your screenshot
-    input_df['Predicted_Flag'] = model.predict(input_df).round()
-    return input_df
+    
+    try:
+        # 1. Feature Selection (Match the 5 features from your GridSearchCV)
+        features = ['invoice_quantity', 'invoice_dollars', 'Freight', 
+                    'total_item_quantity', 'total_item_dollars']
+        
+        # Filter and reorder columns
+        input_ready = input_df[features]
+        
+        # 2. Scale the data
+        input_scaled = SCALER.transform(input_ready)
+
+        # 3. Predict
+        predictions = MODEL.predict(input_scaled)
+        input_df['Predicted_Flag'] = np.array(predictions).flatten().astype(int)
+        
+        return input_df
+
+    except Exception as e:
+        print(f"❌ Prediction Error: {e}")
+        # Helpful debug: check if column names match
+        print(f"DEBUG: Your input columns: {list(input_df.columns)}")
+        return None
 
 if __name__ == "__main__":
-    # Example data matching your Classification model features
+    # Test data - exactly 5 features
     sample_data = {
         "invoice_quantity": [50],
         "invoice_dollars": [1200.0],
         "Freight": [45.0],
-        "days_po_to_invoice": [5],
-        "total_brands": [2],
         "total_item_quantity": [50],
-        "total_item_dollars": [1195.0],
-        "avg_receiving_delay": [2.5]
+        "total_item_dollars": [1195.0]
     }
 
-    prediction = predict_invoice_flag(sample_data)
-    if prediction is not None:
-        print("\n--- Inference Results ---")
-        print(prediction)
+    print("\n--- Running Local Terminal Test ---")
+    result = predict_invoice_flag(sample_data)
+    
+    if result is not None:
+        print("✅ SUCCESS!")
+        print(result[['invoice_dollars', 'total_item_dollars', 'Predicted_Flag']])
+        
+        flag_val = result['Predicted_Flag'].iloc[0]
+        status = "🚩 HIGH RISK" if flag_val == 1 else "✅ LOW RISK"
+        print(f"\nResult: {status}")
+    else:
+        print("❌ Test failed. See errors above.")
