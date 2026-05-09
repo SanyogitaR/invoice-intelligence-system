@@ -109,7 +109,9 @@ This module predicts the expected freight cost using invoice-related information
 ### Screenshot
 
 ```markdown
-![Freight Cost Prediction UI](screenshots/freight_prediction.png)
+![Freight Cost Prediction UI](screenshots/prediction 1.png)
+
+![Freight Cost Prediction UI](screenshots/prediction.png)
 ```
 
 ---
