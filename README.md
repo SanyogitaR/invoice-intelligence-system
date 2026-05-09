@@ -47,6 +47,8 @@ The project combines:
 - Streamlit-based deployment
 
 to build a production-oriented intelligent invoice processing system.
+## 🌐 Live Deployed Application  
+🔗(https://invoice-intelligence-system-ichmfea6brs3spf5vrphzp.streamlit.app/)
 
 ---
 
