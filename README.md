@@ -532,30 +532,4 @@ The project demonstrates how Machine Learning can transform raw business data in
 
 ---
 
-# Author
 
-## Sanyogita Rajput
-
-Computer Science Engineering Student  
-VIT Bhopal University
-
-### Skills
-- Machine Learning
-- Python
-- SQL
-- Data Analysis
-- Streamlit
-- UI/UX Design
-
----
-
-# Contact
-
-### LinkedIn
-ADD_LINKEDIN_LINK
-
-### GitHub
-ADD_GITHUB_LINK
-
-### Email
-ADD_EMAIL
