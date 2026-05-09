@@ -83,37 +83,56 @@ The primary objectives of the system are:
 
 ---
 
-# System Modules
+# Streamlit Web Application
+
+A Streamlit-based interactive application was developed for business users.
+
+### Features
+- Freight Cost Prediction
+- Invoice Risk Detection
+- Interactive UI
+- Real-time prediction system
+
+---
 
 ## Module 1 — Freight Cost Prediction
 
-### Problem Type
-Regression Problem
+This module predicts the expected freight cost using invoice-related information such as quantity and invoice dollars.
 
-### Objective
-Predict expected freight cost using invoice-related features.
-
-### Key Inputs
-- Invoice quantity
-- Invoice dollars
+### Inputs
+- Invoice Quantity
+- Invoice Dollars
 
 ### Output
-Predicted freight cost
+- Predicted Freight Cost
+
+### Screenshot
+
+```markdown
+![Freight Cost Prediction UI](screenshots/freight_prediction.png)
+```
 
 ---
 
 ## Module 2 — Invoice Risk Flagging
 
-### Problem Type
-Classification Problem
+This module predicts whether an invoice is safe or requires manual review based on operational and financial metrics.
 
-### Objective
-Predict whether an invoice requires manual review.
+### Inputs
+- Quantities
+- Invoice Dollars
+- Freight Cost
+- Delay Features
 
-### Output Classes
-- `0 → Normal Invoice`
-- `1 → Risky Invoice`
+### Outputs
+- ✅ Safe Invoice
+- ⚠️ Manual Review Required
 
+### Screenshot
+
+```markdown
+![Invoice Risk Flagging UI](screenshots/invoice_flagging.png)
+```
 ---
 
 # Technologies Used
